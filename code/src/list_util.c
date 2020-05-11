@@ -99,3 +99,25 @@ void list_sort(struct list_element *start) {
     /* answer = merge the two sorted lists together */
     *start = SortedMerge(a, b);
 }
+
+struct list_element* SortedMerge(struct list_element* a, struct list_element* b)
+{
+    struct list_element* result = NULL;
+
+    /* Base cases */
+    if (a == NULL)
+        return (b);
+    else if (b == NULL)
+        return (a);
+
+    /* Pick either a or b, and recur */
+    if (a->data <= b->data) {
+        result = a;
+        result->next = SortedMerge(a->next, b);
+    }
+    else {
+        result = b;
+        result->next = SortedMerge(a, b->next);
+    }
+    return (result);
+}
