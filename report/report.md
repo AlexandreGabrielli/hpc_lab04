@@ -260,4 +260,10 @@ on voit très bien qu'il y a beaucoup de D1 misses dans ce programe et on voit t
 if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
 ```
 
-le problème d'une liste chainée en c c'est que les struct ne se suivent pas forcément dans la mémoire, a mon avis il faut de toute ma
+je vais donc essayer de retenir directement l'adresse et change cette fonction comme suis :
+
+![Nice_1](.\Nice_1.png)
+
+![Nice_2](.\Nice_2.png)
+
+on peut voir que le résultats est surprenant, la ligne n'est plus le goullet d'étranglement qu'il était avant et le nombre de miss dans la d1 a très très fortement diminuer, on verifie avec perf pour voir si la différence de temps est significatif 
