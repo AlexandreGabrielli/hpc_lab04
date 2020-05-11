@@ -1,24 +1,24 @@
 #include <list_util.h>
 
-/* A list_element must at least contain a link to the next
- * element, as well as a uint64_t data value */
-struct list_element {
+/* Link list node */
+struct Node {
     uint64_t data;
-    struct list_element *next;
+    struct Node* next;
 };
+
 
 /* Allocate "len" linked elements and initialize them
  * with random data.
  * Return list head */
-struct list_element *list_init(size_t len) {
+struct Node *list_init(size_t len) {
     srand((unsigned) 1991);
-    struct list_element *head = (struct list_element *) malloc(sizeof(struct list_element));
+    struct Node *head = (struct Node *) malloc(sizeof(struct Node));
     head->data = rand();
     head->next = NULL;
     int i;
-    struct list_element *current = head;
+    struct Node *current = head;
     for (i = 0; i < len; i++) {
-        current->next = (struct list_element *) malloc(sizeof(struct list_element));
+        current->next = (struct Node *) malloc(sizeof(struct Node));
         current = current->next;
         current->next = NULL;
         current->data = rand();
@@ -27,9 +27,9 @@ struct list_element *list_init(size_t len) {
 }
 
 /* Liberate list memory */
-void list_clear(struct list_element *head) {
-    struct list_element *next = head;
-    struct list_element *nextNext;
+void list_clear(struct Node *head) {
+    struct Node *next = head;
+    struct Node *nextNext;
     while (next != NULL) {
         nextNext = next->next;
         free(next);
@@ -37,52 +37,40 @@ void list_clear(struct list_element *head) {
     }
 }
 
-/*this function print the list*/
-void print_list(struct list_element *head) {
-    struct list_element *next = head;
-    printf("{");
-    do {
-        printf("%llu", next->data);
-        next = next->next;
-    } while (next != NULL && printf(","));
-    printf("}\n");
-}
 
-/* function to swap data of two nodes a and b*/
-void swap(struct list_element *a, struct list_element *b) {
-    int temp = a->data;
-    a->data = b->data;
-    b->data = temp;
-}
+/* function prototypes */
+struct Node* SortedMerge(struct Node* a, struct Node* b);
+void FrontBackSplit(struct Node* source,
+                    struct Node** frontRef, struct Node** backRef);
 
-void FrontBackSplit(struct list_element* source,
-                    struct list_element** frontRef, struct list_element** backRef)
+/* sorts the linked list by changing next pointers (not data) */
+void MergeSort(struct Node** headRef)
 {
-    struct list_element* fast;
-    struct list_element* slow;
-    slow = source;
-    fast = source->next;
+    struct Node* head = *headRef;
+    struct Node* a;
+    struct Node* b;
 
-    /* Advance 'fast' two nodes, and advance 'slow' one node */
-    while (fast != NULL) {
-        fast = fast->next;
-        if (fast != NULL) {
-            slow = slow->next;
-            fast = fast->next;
-        }
+    /* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL)) {
+        return;
     }
 
-    /* 'slow' is before the midpoint in the list, so split it in two
-    at that point. */
-    *frontRef = source;
-    *backRef = slow->next;
-    slow->next = NULL;
+    /* Split head into 'a' and 'b' sublists */
+    FrontBackSplit(head, &a, &b);
+
+    /* Recursively sort the sublists */
+    MergeSort(&a);
+    MergeSort(&b);
+
+    /* answer = merge the two sorted lists together */
+    *headRef = SortedMerge(a, b);
 }
 
-
-struct list_element* SortedMerge(struct list_element* a, struct list_element* b)
+/* See https:// www.geeksforgeeks.org/?p=3622 for details of this
+function */
+struct Node* SortedMerge(struct Node* a, struct Node* b)
 {
-    struct list_element* result = NULL;
+    struct Node* result = NULL;
 
     /* Base cases */
     if (a == NULL)
@@ -102,24 +90,32 @@ struct list_element* SortedMerge(struct list_element* a, struct list_element* b)
     return (result);
 }
 
-void list_sort(struct list_element *start) {
-    struct list_element* head = *start;
-    struct list_element* a;
-    struct list_element* b;
+/* UTILITY FUNCTIONS */
+/* Split the nodes of the given list into front and back halves,
+    and return the two lists using the reference parameters.
+    If the length is odd, the extra node should go in the front list.
+    Uses the fast/slow pointer strategy. */
+void FrontBackSplit(struct Node* source,
+                    struct Node** frontRef, struct Node** backRef)
+{
+    struct Node* fast;
+    struct Node* slow;
+    slow = source;
+    fast = source->next;
 
-    /* Base case -- length 0 or 1 */
-    if ((head == NULL) || (head->next == NULL)) {
-        return;
+    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
     }
 
-    /* Split head into 'a' and 'b' sublists */
-    FrontBackSplit(head, &a, &b);
-
-    /* Recursively sort the sublists */
-    list_sort(&a);
-    list_sort(&b);
-
-    /* answer = merge the two sorted lists together */
-    *start = SortedMerge(a, b);
+    /* 'slow' is before the midpoint in the list, so split it in two
+    at that point. */
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
 }
-
+  
