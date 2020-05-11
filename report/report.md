@@ -46,10 +46,6 @@ nous allons lancé perf sur ./sort array 100000 et ./sort list 100000
 
 ![array with perf first version](.\_array_perf_first_version.png)
 
-### list
-
-![list with perf first version](.\_list_perf_first_version.png)
-
 
 ### discutions array 
 
@@ -148,12 +144,13 @@ on voit que les deux derniers tri sont assez similaire, pour les séparer augmen
 
 on peu voir que si nous augmentons la taille de l'array le quick sort fait beaucoup plus de page-faults surement due à la récursion. Nous préférerons donc utilisé le selection sort
 
+### list
+
+![list with perf first version](.\_list_perf_first_version.png)
+
 ### discution list
 
-maitenant nous allons essayer d'utiliser aussi le 
-on peu voir que lorssque nous utilisons list nous avons énormément de branch-misses alors que nous avons quasiment le même nombre de branch total ce qui ralenti énormément le programme lorsque nous utilisons list (par rapport a array)
-nous allons donc investigué notre code avec perf record et nous voyons très bien que c'est bien la fonction de tri qui pose problème. 
-pour que le cpu aient moins de branch-misses nous allons changer le code suivant : 
+on peut voir que nous avons autant de branches que notre premier code de array mais en plus nous avons énormément de branch-misses. comme nous ne pouvons pas effectuer facilement un tri par selection ou quick sort avec une 
 ```c
 /* Arrange a list in increasing order of value */
 void list_sort(struct list_element *start) {

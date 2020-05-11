@@ -55,33 +55,47 @@ void swap(struct list_element *a, struct list_element *b) {
     b->data = temp;
 }
 
-void list_sort(struct list_element *start) {
-    int swapped;
-    struct list_element *ptr1;
-    struct list_element *lptr = NULL;
+void FrontBackSplit(struct Node* source,
+                    struct Node** frontRef, struct Node** backRef)
+{
+    struct Node* fast;
+    struct Node* slow;
+    slow = source;
+    fast = source->next;
 
-    /* Checking for empty list */
-    if (start == NULL)
-        return;
-
-    do {
-        swapped = 0;
-        ptr1 = start;
-        struct list_element *next = ptr1->next;
-
-        while (next != lptr) {
-            if (ptr1->data > next->data) {
-                uint64_t x = ptr1->data;
-                ptr1->data = next->data;
-                next->data = x;
-
-                swapped = 1;
-            }
-            ptr1 = next;
+    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    while (fast != NULL) {
+        fast = fast->next;
+        if (fast != NULL) {
+            slow = slow->next;
+            fast = fast->next;
         }
-        lptr = ptr1;
-    } while (swapped);
+    }
+
+    /* 'slow' is before the midpoint in the list, so split it in two
+    at that point. */
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
 }
 
+void list_sort(struct list_element *start) {
+    struct Node* head = *start;
+    struct Node* a;
+    struct Node* b;
 
+    /* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL)) {
+        return;
+    }
 
+    /* Split head into 'a' and 'b' sublists */
+    FrontBackSplit(head, &a, &b);
+
+    /* Recursively sort the sublists */
+    MergeSort(&a);
+    MergeSort(&b);
+
+    /* answer = merge the two sorted lists together */
+    *start = SortedMerge(a, b);
+}
