@@ -38,8 +38,8 @@ void array_sort(uint64_t *tableau, int taille) {
         }
         courant ++;
     }
-    tri_rapide(tableau, mur - 1);
-    tri_rapide(tableau + mur - 1, taille - mur + 1);
+    array_sort(tableau, mur - 1);
+    array_sort(tableau + mur - 1, taille - mur + 1);
 }
 
 /*this function print the array */
