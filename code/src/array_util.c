@@ -20,26 +20,28 @@ uint64_t *array_init(const size_t len) {
     return ptr;
 }
 
-void array_sort(uint64_t *tableau, int taille) {
+
+/* Arrange a array in increasing order of value */
+void array_sort(uint64_t *data, const size_t len) {
     /*tri par selection*/
-    int mur, courant, pivot, tmp;
-    if (taille < 2) return;
-    // On prend comme pivot l element le plus a droite
-    pivot = tableau[taille - 1];
-    mur  = courant = 0;
-    while (courant<taille) {
-        if (tableau[courant] <= pivot) {
-            if (mur != courant) {
-                tmp=tableau[courant];
-                tableau[courant]=tableau[mur];
-                tableau[mur]=tmp;
+    int passage = 0;
+    bool permutation = true;
+    int en_cours;
+
+    while (permutation) {
+        permutation = false;
+        passage++;
+        for (en_cours = 0; en_cours < 20 - passage; en_cours++) {
+            if (data[en_cours] > data[en_cours + 1]) {
+                permutation = true;
+                // on echange les deux elements
+                int temp = data[en_cours];
+                data[en_cours] = data[en_cours + 1];
+                data[en_cours + 1] = temp;
             }
-            mur ++;
         }
-        courant ++;
     }
-    array_sort(tableau, mur - 1);
-    array_sort(tableau + mur - 1, taille - mur + 1);
+
 }
 
 /*this function print the array */

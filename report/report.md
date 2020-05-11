@@ -126,8 +126,8 @@ void array_sort(int *tableau, int taille) {
         }
         courant ++;
     }
-    tri_rapide(tableau, mur - 1);
-    tri_rapide(tableau + mur - 1, taille - mur + 1);
+    array_sort(tableau, mur - 1);
+    array_sort(tableau + mur - 1, taille - mur + 1);
 }
 
 ```
@@ -144,9 +144,9 @@ on voit que les deux derniers tri sont assez similaire, pour les séparer augmen
 
 ###### quick sort
 
-![array with perf rapide 10000000](.\_array_perf_rapide_10000000.png)
+![ array with perf quickSort_100000000](.\_array_perf_quickSort_100000000.png)
 
-on peu voir que les deux sont e
+on peu voir que si nous augmentons la taille de l'array le quick sort fait beaucoup plus de page-faults surement due à la récursion. Nous préférerons donc utilisé le selection sort
 
 ### discution list
 

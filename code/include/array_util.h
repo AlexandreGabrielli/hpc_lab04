@@ -20,7 +20,7 @@ uint64_t *array_init(size_t len);
 void array_clear(uint64_t *data);
 
 /* Arrange a array in increasing order of value */
-void array_sort(uint64_t *tableau, int taille) ;
+void array_sort(uint64_t *data, const size_t len);
 
 /*this function print the array */
 void print_array(uint64_t *data, size_t len);
