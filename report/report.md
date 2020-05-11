@@ -136,11 +136,17 @@ on obtiens
 
 ![array with perf quick sort](.\_array_perf_rapide.png)
 
-on voit que les deux derniers tri sont assez similaire, pour les séparer augmentons de manière significatif
-la taille de l'array en le mettant par exemple a 
+on voit que les deux derniers tri sont assez similaire, pour les séparer augmentons de manière significatif et de voir la différence entre les deux : 
 
+###### selection sort
 
-on peu voir très clairement que le tri rapide est le plus optimal pour ici
+![array with perf selection sort 10000000](.\_array_perf_selection_10000000.png)
+
+###### quick sort
+
+![array with perf rapide 10000000](.\_array_perf_rapide_10000000.png)
+
+on peu voir que les deux sont e
 
 ### discution list
 
