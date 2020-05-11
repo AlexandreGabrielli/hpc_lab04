@@ -59,21 +59,21 @@ void swap(struct list_element *a, struct list_element *b) {
 
 
 // Function to insert a given node in a sorted linked list
-void sortedInsert(struct Node**, struct Node*);
+void sortedInsert(struct list_element**, struct list_element*);
 
 // function to sort a singly linked list using insertion sort
-void insertionSort(struct Node **head_ref)
+void list_sort(struct list_element **head_ref)
 {
     // Initialize sorted linked list
-    struct Node *sorted = NULL;
+    struct list_element *sorted = NULL;
 
     // Traverse the given linked list and insert every
     // node to sorted
-    struct Node *current = *head_ref;
+    struct list_element *current = *head_ref;
     while (current != NULL)
     {
         // Store next for next iteration
-        struct Node *next = current->next;
+        struct list_element *next = current->next;
 
         // insert current in sorted linked list
         sortedInsert(&sorted, current);
@@ -89,7 +89,7 @@ void insertionSort(struct Node **head_ref)
 /* function to insert a new_node in a list. Note that this
   function expects a pointer to head_ref as this can modify the
   head of the input linked list (similar to push())*/
-void list_sort(struct list_element** head_ref, struct list_element* new_node)
+void sortedInsert(struct list_element** head_ref, struct list_element* new_node)
 {
     struct list_element* current;
     /* Special case for the head end */
