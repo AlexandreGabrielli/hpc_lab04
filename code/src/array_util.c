@@ -21,24 +21,25 @@ uint64_t *array_init(const size_t len) {
 }
 
 void array_sort(uint64_t *tableau, int taille) {
-    int mur, courant, pivot, tmp;
-    if (taille < 2) return;
-    // On prend comme pivot l element le plus a droite
-    pivot = tableau[taille - 1];
-    mur  = courant = 0;
-        while (courant<taille) {
-        if (tableau[courant] <= pivot) {
-            if (mur != courant) {
-                tmp=tableau[courant];
-                tableau[courant]=tableau[mur];
-                tableau[mur]=tmp;              
+    /*tri par selection*/
+    int passage = 0;
+    bool permutation = true;
+    int en_cours;
+
+    while ( permutation) {
+        permutation = false;
+        passage ++;
+        for (en_cours=0;en_cours<20-passage;en_cours++) {
+            if (tableau[en_cours]>tableau[en_cours+1]){
+                permutation = true;
+                // on echange les deux elements
+                int temp = tableau[en_cours];
+                tableau[en_cours] = tableau[en_cours+1];
+                tableau[en_cours+1] = temp;
             }
-            mur ++;
         }
-        courant ++;
     }
-    array_sort(tableau, mur - 1);
-    array_sort(tableau + mur - 1, taille - mur + 1);
+
 }
 
 /*this function print the array */
