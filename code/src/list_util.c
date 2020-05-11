@@ -40,11 +40,12 @@ void list_clear(struct Node *head) {
 
 /* function prototypes */
 struct Node* SortedMerge(struct Node* a, struct Node* b);
+
 void FrontBackSplit(struct Node* source,
                     struct Node** frontRef, struct Node** backRef);
 
 /* sorts the linked list by changing next pointers (not data) */
-void MergeSort(struct Node** headRef)
+void list_sort(struct Node** headRef)
 {
     struct Node* head = *headRef;
     struct Node* a;
@@ -59,8 +60,8 @@ void MergeSort(struct Node** headRef)
     FrontBackSplit(head, &a, &b);
 
     /* Recursively sort the sublists */
-    MergeSort(&a);
-    MergeSort(&b);
+    list_sort(&a);
+    list_sort(&b);
 
     /* answer = merge the two sorted lists together */
     *headRef = SortedMerge(a, b);
@@ -118,4 +119,3 @@ void FrontBackSplit(struct Node* source,
     *backRef = slow->next;
     slow->next = NULL;
 }
-  

@@ -14,18 +14,18 @@
 
 /* A list_element must at least contain a link to the next
  * element, as well as a uint64_t data value */
-struct list_element;
+struct Node;
 
 /* Allocate "len" linked elements and initialize them
  * with random data.
  * Return list head */
-struct list_element *list_init(size_t len);
+struct Node *list_init(size_t len);
 
 /* Liberate list memory */
-void list_clear(struct list_element *head);
+void list_clear(struct Node *head);
 
 /* Arrange a list in increasing order of value */
-void list_sort(struct list_element *head);
+void list_sort(struct Node *head);
 
 /*this function print the list*/
-void print_list(struct list_element *head);
+void print_list(struct Node *head);
