@@ -58,33 +58,57 @@ void swap(struct list_element *a, struct list_element *b) {
 
 
 
-void list_sort(struct list_element *start) {
-    int swapped;
-    struct list_element *ptr1;
-    struct list_element *lptr = NULL;
+// Function to insert a given node in a sorted linked list
+void sortedInsert(struct Node**, struct Node*);
 
-    /* Checking for empty list */
-    if (start == NULL)
-        return;
+// function to sort a singly linked list using insertion sort
+void insertionSort(struct Node **head_ref)
+{
+    // Initialize sorted linked list
+    struct Node *sorted = NULL;
 
-    do {
-        swapped = 0;
-        ptr1 = start;
-        struct list_element *next = ptr1->next;
+    // Traverse the given linked list and insert every
+    // node to sorted
+    struct Node *current = *head_ref;
+    while (current != NULL)
+    {
+        // Store next for next iteration
+        struct Node *next = current->next;
 
-        while (next != lptr) {
-            if (ptr1->data > next->data) {
-                uint64_t x = ptr1->data;
-                ptr1->data = next->data;
-                next->data = x;
+        // insert current in sorted linked list
+        sortedInsert(&sorted, current);
 
-                swapped = 1;
-            }
-            ptr1 = next;
-        }
-        lptr = ptr1;
-    } while (swapped);
+        // Update current
+        current = next;
+    }
+
+    // Update head_ref to point to sorted linked list
+    *head_ref = sorted;
 }
 
-
+/* function to insert a new_node in a list. Note that this
+  function expects a pointer to head_ref as this can modify the
+  head of the input linked list (similar to push())*/
+void list_sort(struct list_element** head_ref, struct list_element* new_node)
+{
+    struct list_element* current;
+    /* Special case for the head end */
+    if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+    {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+    }
+    else
+    {
+        /* Locate the node before the point of insertion */
+        current = *head_ref;
+        while (current->next!=NULL &&
+               current->next->data < new_node->data)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
 

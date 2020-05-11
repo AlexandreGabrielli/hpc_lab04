@@ -25,7 +25,7 @@ struct list_element *list_init(size_t len);
 void list_clear(struct list_element *head);
 
 /* Arrange a list in increasing order of value */
-void list_sort(struct list_element *head);
+void list_sort(struct list_element** head);
 
 /*this function print the list*/
 void print_list(struct list_element *head);

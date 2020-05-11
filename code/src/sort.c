@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
             liste = list_init(data_len);
             //print_list(liste);
             //sort the list
-            list_sort(liste);
+            list_sort(&liste);
             //print_list(liste);
             //clear the list
             list_clear(liste);
