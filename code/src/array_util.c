@@ -20,7 +20,7 @@ uint64_t *array_init(const size_t len) {
     return ptr;
 }
 
-void array_sort(int *tableau, int taille) {
+void array_sort(uint64_t *tableau, int taille) {
     int mur, courant, pivot, tmp;
     if (taille < 2) return;
     // On prend comme pivot l element le plus a droite

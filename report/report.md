@@ -148,7 +148,7 @@ maitenant nous allons essayer d'utiliser aussi le
 on peu voir que lorssque nous utilisons list nous avons énormément de branch-misses alors que nous avons quasiment le même nombre de branch total ce qui ralenti énormément le programme lorsque nous utilisons list (par rapport a array)
 nous allons donc investigué notre code avec perf record et nous voyons très bien que c'est bien la fonction de tri qui pose problème. 
 pour que le cpu aient moins de branch-misses nous allons changer le code suivant : 
-```
+```c
 /* Arrange a list in increasing order of value */
 void list_sort(struct list_element *start) {
     int swapped, i;
@@ -173,9 +173,6 @@ void list_sort(struct list_element *start) {
         lptr = ptr1;
     } while (swapped);
 }
-
-​```c
-Comme il semblerrait qu'il a du mal a prédire le résultat nous allons faire un tri par selection
 ```
 /* Arrange a list in increasing order of value */
 void list_sort(struct list_element *start) {
@@ -196,6 +193,7 @@ void list_sort(struct list_element *start) {
          }
      }
 }
+
 ```c 
 
 ### résultat de la modification
