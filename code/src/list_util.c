@@ -55,22 +55,33 @@ void swap(struct list_element *a, struct list_element *b) {
     b->data = temp;
 }
 
-
 void list_sort(struct list_element *start) {
-    /*tri par selection*/
-    struct list_element * current = start;
-    while(current){
-        struct list_element* min = current;
-        struct list_element* next = current-> next;
-        while(next){
-            if (min->data > next->data){
-                min = next;
-                next = next->next;
+    int swapped;
+    struct list_element *ptr1;
+    struct list_element *lptr = NULL;
+
+    /* Checking for empty list */
+    if (start == NULL)
+        return;
+
+    do {
+        swapped = 0;
+        ptr1 = start;
+        struct list_element *next = ptr1->next;
+
+        while (next != lptr) {
+            if (ptr1->data > next->data) {
+                uint64_t x = ptr1->data;
+                ptr1->data = next->data;
+                next->data = x;
+
+                swapped = 1;
             }
-            uint64_t temp = current->data;
-            current->data = min->data;
-            min->data = temp;
-            current = current->next;
+            ptr1 = next;
         }
-    }
+        lptr = ptr1;
+    } while (swapped);
 }
+
+
+
