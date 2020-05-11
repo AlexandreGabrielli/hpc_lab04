@@ -234,56 +234,7 @@ void sortedInsert(struct list_element** head_ref, struct list_element* new_node)
 
 on peut voir que le résultat est beaucoup plus satisfaisant: 
 
-
-
-/* Arrange a list in increasing order of value */
-void list_sort(struct list_element *start) {
-    /*tri par selection*/
-    struct list_element * current = start;
-    while(current){
-        struct list_element* min = current;
-        struct list_element* next = current-> next;
-        while(next){
-            if (min->data > next->data){
-                min = next; 
-                next = next->next;
-            }
-            uint64_t temp = current->data;
-            current->data = min->data;
-            min->data = temp;
-            current = current->next;
-         }
-     }
-}
-
-```c 
-
-### résultat de la modification
-
-on peu voir que l'on est beaucoup plus rapide surement par ce que nous avons beaucoup moins de branches et malgrès les 6% de branches miss nous somme bien meilleur avec ce tri
-
-nous allons donc changer notre tri d'array pour avoir moins de branches afin d'amélioré le temps cpu
-
-```
-/* Arrange a array in increasing order of value */
-void array_sort(uint64_t *data, const size_t len) {
-    int i = 0, j = 0, tmp;
-    for (i = 0; i < len; i++) {   // loop n times - 1 per element
-        for (j = 0; j < len - i - 1; j++) { // last i elements are sorted already
-            if (data[j] > data[j + 1]) {   // swop if order is broken
-                tmp = data[j];
-                data[j] = data[j + 1];
-                data[j + 1] = tmp;
-            }
-        }
-    }
-
-}
-```c
+![list_insertionSort](.\list_insertionSort.png)
 
 ## valgrind 
 
-
-
-
-```
