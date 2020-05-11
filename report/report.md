@@ -249,3 +249,15 @@ on peut voir que le résultat est beaucoup plus satisfaisant:
 comme notre code d'array est plutôt simple on ne voit pas trop de problème qui apparait avec calgrind, il ne semble pas y avoir de goulet d'étranglement bien défini.
 
 ## list 
+
+ ![valgrind_list_resume](.\valgrind_list_resume.png)
+
+![valgrind_list_read](.\valgrind_list_read.png)
+
+on voit très bien qu'il y a beaucoup de D1 misses dans ce programe et on voit très bien que le goulet d'étranglement se trouve a la ligne 
+
+```c
+if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+```
+
+le problème d'une liste chainée en c c'est que les struct ne se suivent pas forcément dans la mémoire, a mon avis il faut de toute ma

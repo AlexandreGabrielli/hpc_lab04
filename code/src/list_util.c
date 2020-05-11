@@ -92,16 +92,17 @@ void list_sort(struct list_element **head_ref)
 void sortedInsert(struct list_element** head_ref, struct list_element* new_node)
 {
     struct list_element* current;
+    struct list_element* tmp = *head_ref;
     /* Special case for the head end */
-    if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+    if (tmp == NULL || (tmp)->data >= new_node->data)
     {
-        new_node->next = *head_ref;
-        *head_ref = new_node;
+        new_node->next = tmp;
+        tmp = new_node;
     }
     else
     {
         /* Locate the node before the point of insertion */
-        current = *head_ref;
+        current = tmp;
         while (current->next!=NULL &&
                current->next->data < new_node->data)
         {
