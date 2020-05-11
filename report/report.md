@@ -238,3 +238,14 @@ on peut voir que le résultat est beaucoup plus satisfaisant:
 
 ## valgrind 
 
+## array
+
+ ![valgrind_array](C:\Users\Alexandre\Documents\cours\semestre_6\HPC\lab04\hpc_lab04\report\valgrind_array.png)
+
+![valgrind_array2](.\valgrind_array2.png)
+
+
+
+comme notre code d'array est plutôt simple on ne voit pas trop de problème qui apparait avec calgrind, il ne semble pas y avoir de goulet d'étranglement bien défini.
+
+## list 
