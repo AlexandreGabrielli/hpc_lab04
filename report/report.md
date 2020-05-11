@@ -140,7 +140,7 @@ on voit que les deux derniers tri sont assez similaire, pour les séparer augmen
 
 ###### selection sort
 
-![array with perf selection sort 10000000](.\_array_perf_selection_10000000.png)
+![array with perf selectionSort_100000000](.\_array_perf_selctionSort_100000000.png)
 
 ###### quick sort
 
