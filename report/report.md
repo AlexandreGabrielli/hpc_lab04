@@ -150,7 +150,7 @@ on peu voir que si nous augmentons la taille de l'array le quick sort fait beauc
 
 ### discution list
 
-on peut voir que nous avons autant de branches que notre premier code de array mais en plus nous avons énormément de branch-misses. comme nous ne pouvons pas effectuer facilement un tri par selection ou quick sort avec une 
+on peut voir que nous avons autant de branches que notre premier code de array mais en plus nous avons énormément de branch-misses. comme nous ne pouvons pas effectuer facilement un tri par selection ou quick sort nous allons remplacé notre premier code par un tri par incertion que nous dont nous avons trouver <a url="https://www.geeksforgeeks.org/insertion-sort-for-singly-linked-list/">le code</a> sur internet 
 ```c
 /* Arrange a list in increasing order of value */
 void list_sort(struct list_element *start) {
@@ -177,6 +177,65 @@ void list_sort(struct list_element *start) {
     } while (swapped);
 }
 ```
+deviens : 
+
+```c
+/ function to sort a singly linked list using insertion sort
+void list_sort(struct list_element **head_ref)
+{
+    // Initialize sorted linked list
+    struct list_element *sorted = NULL;
+
+    // Traverse the given linked list and insert every
+    // node to sorted
+    struct list_element *current = *head_ref;
+    while (current != NULL)
+    {
+        // Store next for next iteration
+        struct list_element *next = current->next;
+
+        // insert current in sorted linked list
+        sortedInsert(&sorted, current);
+
+        // Update current
+        current = next;
+    }
+
+    // Update head_ref to point to sorted linked list
+    *head_ref = sorted;
+}
+
+/* function to insert a new_node in a list. Note that this
+  function expects a pointer to head_ref as this can modify the
+  head of the input linked list (similar to push())*/
+void sortedInsert(struct list_element** head_ref, struct list_element* new_node)
+{
+    struct list_element* current;
+    /* Special case for the head end */
+    if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+    {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+    }
+    else
+    {
+        /* Locate the node before the point of insertion */
+        current = *head_ref;
+        while (current->next!=NULL &&
+               current->next->data < new_node->data)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+```
+
+on peut voir que le résultat est beaucoup plus satisfaisant: 
+
+
+
 /* Arrange a list in increasing order of value */
 void list_sort(struct list_element *start) {
     /*tri par selection*/
