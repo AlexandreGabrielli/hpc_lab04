@@ -19,6 +19,7 @@ CPU architecture: 7
 CPU variant	: 0x0
 CPU part	: 0xd03
 CPU revision	: 4
+
 ## version de linux 
 debian 10.3
 ## version du kernel
@@ -26,12 +27,8 @@ debian 10.3
 
 ### installation 
 
-pour installer perf sur debian il faut effectuer un petit trick.
-après avoir installer linux tools il faut installer automatiquement une version de perf car le package 4.19 n'est pas disponible et je n'ai pas envie de l'écrire moi même.
-du coup j'ai installer linux-perf-4.9 et ensuite modifier le fichier /usr/bin/perf 
-et modifier la ligne exec "perf_4.$version" "$@" par exec "perf_4.9" "$@"
-cella implique que perf n'est pas a as 100% fonctionnel et necessite d'utilisé 
-le parametre --no-demangle ou --call-graph=lbr works pour pouvoir lire les résutalts.
+perf sur debian pose quelque problème , après avoir installer linux tools j'ai due installer une autre version de perf car le package 4.19 n'as pas été écris sur debian et je n'ai pas envie de l'écrire moi même.
+du coup j'ai installer linux-perf-4.9 et ensuite modifier le fichier /usr/bin/perf  et modifier la ligne exec "perf_4.$version" "$@" par exec "perf_4.9" "$@" cella implique que perf n'est pas a as 100% fonctionnel et peu nécessiter d'utilisé les paramètre  --no-demangle ou --call-graph=lbr works.
 
 
 ## perf
@@ -47,22 +44,36 @@ nous allons lancé perf sur ./sort array 100000 et ./sort list 100000
 
 ### array 
 
-
+![array with perf first version](.\_array_perf_first_version.png)
 
 ### list
+
+![list with perf first version](.\_list_perf_first_version.png)
 
 
 ### discutions array 
 
-on voit que nous avons 0 % de cache miss mais notre programme mais beaucoup de temps, on utilise beaucoup de temps cpu et
-nous avons énormément de branches car nous utilisons un tri par insertion et nous devons donc effectuer beaucoup de comparaison
-en changeant le code suivant: 
+on voit que nous avons 0 % de cache miss mais notre programme prend beaucoup de temps, on utilise beaucoup de temps cpu et nous avons énormément de branches car nous utilisons un tri par insertion et nous devons donc effectuer beaucoup de comparaison.
 
+en changeant la premières version de notre code (ci dessous): 
+
+```c
+/* Arrange a array in increasing order of value */
+void array_sort(uint64_t *data, const size_t len) {
+    int i = 0, j = 0, tmp;
+    for (i = 0; i < len; i++) {   // loop n times - 1 per element
+        for (j = 0; j < len - i - 1; j++) { // last i elements are sorted already
+            if (data[j] > data[j + 1]) {  // swop if order is broken
+                tmp = data[j];
+                data[j] = data[j + 1];
+                data[j + 1] = tmp;
+            }
+        }
+    }
+}
 ```
-insert old code here
-```
-par 
-```
+par un tri nécessitant moins de comparaison comme un tri par sélection (code ci-dessous): 
+```c
 
 /* Arrange a array in increasing order of value */
 void array_sort(uint64_t *data, const size_t len) {
@@ -89,14 +100,15 @@ void array_sort(uint64_t *data, const size_t len) {
 ```
 on obtiens de bien meilleur performance. 
 
-IMAGE ici 
+![array with perf selection sort](.\_array_perf_selection.png)
 
-on voit que nous avons plus de branch-misses (environ 1.4%) mais nous effectuons beaucoup moins de branches 
-environ 700'000 contre plus de 5'000'00'000 avant. le résultat est un programme beaucoup plus rapide quand on regarde le task-clock.
+on voit que nous avons plus de branch-misses (environ 1.4%) mais nous effectuons beaucoup moins de branches (environ 700'000 contre plus de 5'000'00'000) et nécessitons moins de temps cpu (12ms contre ~120'000 ms). 
 
-essayons maintenant le tri rapide
+le résultat est donc un programme beaucoup plus rapide malgrès le fait que nous avons beaucoup plus de branch-misses.
 
-```
+essayons maintenant d'amélioré encore cella avec le tri rapide:
+
+```c
 void array_sort(int *tableau, int taille) {
     int mur, courant, pivot, tmp;
     if (taille < 2) return;
@@ -119,6 +131,10 @@ void array_sort(int *tableau, int taille) {
 }
 
 ```
+
+on obtiens 
+
+![array with perf quick sort](.\_array_perf_rapide.png)
 
 on voit que les deux derniers tri sont assez similaire, pour les séparer augmentons de manière significatif
 la taille de l'array en le mettant par exemple a 
@@ -158,7 +174,7 @@ void list_sort(struct list_element *start) {
     } while (swapped);
 }
 
-```c
+​```c
 Comme il semblerrait qu'il a du mal a prédire le résultat nous allons faire un tri par selection
 ```
 /* Arrange a list in increasing order of value */
@@ -209,3 +225,5 @@ void array_sort(uint64_t *data, const size_t len) {
 
 
 
+
+```
