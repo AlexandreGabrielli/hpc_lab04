@@ -25,7 +25,7 @@ struct Node *list_init(size_t len);
 void list_clear(struct Node *head);
 
 /* Arrange a list in increasing order of value */
-void list_sort(struct Node *head);
+void list_sort(struct Node **head);
 
 /*this function print the list*/
 void print_list(struct Node *head);
