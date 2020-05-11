@@ -55,11 +55,11 @@ void swap(struct list_element *a, struct list_element *b) {
     b->data = temp;
 }
 
-void FrontBackSplit(struct Node* source,
-                    struct Node** frontRef, struct Node** backRef)
+void FrontBackSplit(struct list_element* source,
+                    struct list_element** frontRef, struct list_element** backRef)
 {
-    struct Node* fast;
-    struct Node* slow;
+    struct list_element* fast;
+    struct list_element* slow;
     slow = source;
     fast = source->next;
 
@@ -80,9 +80,9 @@ void FrontBackSplit(struct Node* source,
 }
 
 void list_sort(struct list_element *start) {
-    struct Node* head = *start;
-    struct Node* a;
-    struct Node* b;
+    struct list_element* head = *start;
+    struct list_element* a;
+    struct list_element* b;
 
     /* Base case -- length 0 or 1 */
     if ((head == NULL) || (head->next == NULL)) {
