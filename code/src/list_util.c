@@ -79,26 +79,6 @@ void FrontBackSplit(struct list_element* source,
     slow->next = NULL;
 }
 
-void list_sort(struct list_element *start) {
-    struct list_element* head = *start;
-    struct list_element* a;
-    struct list_element* b;
-
-    /* Base case -- length 0 or 1 */
-    if ((head == NULL) || (head->next == NULL)) {
-        return;
-    }
-
-    /* Split head into 'a' and 'b' sublists */
-    FrontBackSplit(head, &a, &b);
-
-    /* Recursively sort the sublists */
-    MergeSort(&a);
-    MergeSort(&b);
-
-    /* answer = merge the two sorted lists together */
-    *start = SortedMerge(a, b);
-}
 
 struct list_element* SortedMerge(struct list_element* a, struct list_element* b)
 {
@@ -121,3 +101,25 @@ struct list_element* SortedMerge(struct list_element* a, struct list_element* b)
     }
     return (result);
 }
+
+void list_sort(struct list_element *start) {
+    struct list_element* head = *start;
+    struct list_element* a;
+    struct list_element* b;
+
+    /* Base case -- length 0 or 1 */
+    if ((head == NULL) || (head->next == NULL)) {
+        return;
+    }
+
+    /* Split head into 'a' and 'b' sublists */
+    FrontBackSplit(head, &a, &b);
+
+    /* Recursively sort the sublists */
+    list_sort(&a);
+    list_sort(&b);
+
+    /* answer = merge the two sorted lists together */
+    *start = SortedMerge(a, b);
+}
+
